@@ -1,0 +1,33 @@
+<form>
+  <div class="imgcontainer">
+    <img
+      src="../../../../src/Artboard 3.png"
+      alt="Avatar"
+      style="height: 100px; width: 100px"
+    />
+  </div>
+  <alert></alert>
+  <div class="container">
+    <label for="uname"><b>Username</b></label>
+    <input
+      type="text"
+      placeholder="Enter Username"
+      [(ngModel)]="username"
+      name="uname"
+      required
+    />
+
+    <label for="psw"><b>Password</b></label>
+    <input
+      type="password"
+      placeholder="Enter Password"
+      [(ngModel)]="password"
+      name="psw"
+      required
+    />
+
+    <button type="submit" style="margin-left: 45%" (click)="submit()">
+      Login
+    </button>
+  </div>
+</form>

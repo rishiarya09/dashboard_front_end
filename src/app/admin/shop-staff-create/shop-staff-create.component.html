@@ -1,0 +1,40 @@
+<div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" [routerLink]="['/staffCreate']">
+      <img
+        src="../../../assets/brand/bootstrap-solid.svg"
+        width="30"
+        height="30"
+        class="d-inline-block align-top"
+        alt=""
+      />
+      Juturu
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/staffCreate']">Staff Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/shopCreate']">Shop Register</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/enquiry-list']">Enquiries</a>
+        </li>
+      </ul>
+      <button class="btn btn-primary" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+</div>

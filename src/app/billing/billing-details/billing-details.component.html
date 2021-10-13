@@ -1,0 +1,108 @@
+<div *ngIf="bill">
+  <div *ngIf="bill.view == 'u' || bill.view == 'n' && bill.view != 'v' " class="row">
+    <div class="col-md-12">
+      <h2 *ngIf="bill.view == 'u'">Update Bill</h2>
+      <h2 *ngIf="bill.view == 'n'">New Bill</h2>
+    </div>
+  </div>
+  <div *ngIf="bill.view == 'u' || bill.view == 'n' && bill.view != 'v'" class="row">
+    <form class="col-md-12">
+      <div class="form-group">
+        <label for="bill-name">Name</label>
+        <input class="form-control" name="bill-name" [(ngModel)]="bill.name" placeholder="Name" />
+      </div>
+      <div class="form-group">
+        <label for="bill-phone-no">Phone_No</label>
+        <input class="form-control" name="bill-phone-no" [(ngModel)]="bill.phone_no" placeholder="1234567890" />
+      </div>
+      <div class="form-group">
+        <label for="bill-address">Address</label>
+        <input class="form-control" name="bill-address" [(ngModel)]="bill.address" placeholder="Enter your street and door number with city" />
+      </div>
+      <div class="form-group">
+        <label for="bill-city">City</label>
+        <input class="form-control" name="bill-city" [(ngModel)]="bill.city" placeholder="Hyderabad" />
+      </div>
+      <div class="form-group">
+        <label for="select-no-of-products">Select No of Products</label>
+        <select class="products" [(ngModel)]="count" name="count of the products" (change)="setProduct()">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div *ngIf="bill.products && bill.products.length">
+        <div *ngFor="let b of bill.products; let i = index;">
+          <h4>Product: {{i+1}}</h4>
+          <div class="form-group">
+            <label for="bill-product">Product</label>
+            <input class="form-control" name="bill-product" [(ngModel)]="b.product_type" placeholder="refregirator" />
+          </div>
+          <div class="form-group">
+            <label for="bill-model-no">Model_No</label>
+            <input class="form-control" name="bill-model-no" [(ngModel)]="b.model_no" placeholder="Enter the model number" />
+          </div>
+          <div class="form-group">
+            <label for="bill-given-price">Price</label>
+            <input class="form-control" name="bill-given-price" [(ngModel)]="b.given_price" placeholder="Enter the given amount" />
+          </div>
+          <div class="form-group">
+            <label for="bill-comments">Comments</label>
+            <input class="form-control" name="bill-comments" [(ngModel)]="b.Comments" placeholder="Enter comments if needed" />
+          </div>
+          <div class="form-group">
+            <label for="bill-payment-mode"> Mode of payment</label>
+            <button class="btn btn-{{b.payment_type == 'finance'? 'primary': 'default'}}" (click)="b.payment_type = 'finance' ">
+              finance </button>
+            <button class="btn btn-{{b.payment_type == 'cash'? 'primary': 'default'}}" (click)="b.payment_type = 'cash'">cash</button>
+            <button class="btn btn-{{b.payment_type == 'card'? 'primary': 'default'}}" (click)="b.payment_type = 'card'">card</button>
+          </div>
+          <div class="form-group">
+            <label for="bill-payment-mode"> Mode of payment</label>
+            <button class="btn btn-{{b.stock_place == 'showroom'? 'primary': 'default'}}" (click)="b.stock_place = 'showroom' ">
+              showroom </button>
+            <button class="btn btn-{{b.stock_place == 'godown'? 'primary': 'default'}}" (click)="b.stock_place = 'godown'">godown</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" *ngIf="bill.view == 'n'" (click)="createBill(bill)">Create</button>
+      <button class="btn btn-info" *ngIf="bill.view == 'u'" (click)="updateBill(bill)">Update</button>
+
+    </form>
+  </div>
+  <div style="margin-top: 2%">
+    <div class="col-md-12" *ngIf="bill.view =='v'">
+      <h2>Bill Details</h2>
+    </div>
+    <div class="card" *ngIf="bill.view =='v'">
+      <div class="container row">
+        <div class="col-md-12">
+          <p>Name: {{bill.name}}</p>
+          <p>Mobile: {{bill.phone_no}}</p>
+          <p>Address: {{bill.address}}</p>
+          <p>City: {{bill.city}}</p>
+          <ul *ngFor="let item of bill.products; let i = index;">
+            <li>
+              <h6>Product:{{i+1}}</h6>
+            </li>
+            <li>{{item.product_type}}</li>
+            <li>{{item.model_no}}</li>
+            <li>{{item.given_price}}</li>
+            <li>Status {{item.status}}</li>
+            <li><label>Mode Of Payment:</label>
+              <button disabled class="btn btn-{{item.payment_type == 'finance'? 'primary': 'default'}}" *ngIf="item.payment_type == 'finance'">
+                finance </button>
+              <button disabled class="btn btn-{{item.payment_type == 'cash'? 'primary': 'default'}}" *ngIf="item.payment_type == 'cash'">cash</button>
+              <button disabled class="btn btn-{{item.payment_type == 'card'? 'primary': 'default'}}" *ngIf="item.payment_type == 'card'">card</button></li>
+              <li><label>Stock:</label>
+                <button disabled class="btn btn-{{item.stock_place == 'showroom'? 'primary': 'default'}}" *ngIf="item.stock_place == 'showroom'">
+                  showroom </button>
+                <button disabled class="btn btn-{{item.stock_place == 'godown'? 'primary': 'default'}}" *ngIf="item.stock_place == 'godown'">Godown</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

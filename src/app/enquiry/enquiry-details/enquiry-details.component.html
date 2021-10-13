@@ -1,0 +1,223 @@
+<div *ngIf="query">
+  <div
+    *ngIf="query.view == 'u' || (query.view == 'n' && query.view != 'v')"
+    class="row"
+  >
+    <div class="col-md-12">
+      <h2 *ngIf="query.view == 'u'">Update Query</h2>
+      <h2 *ngIf="query.view == 'n'">New Query</h2>
+      <h2 *ngIf="query.view == 's'">update Status</h2>
+    </div>
+  </div>
+  <div
+    *ngIf="query.view == 'u' || (query.view == 'n' && query.view != 'v')"
+    class="row"
+  >
+    <form class="col-md-12">
+      <div class="form-group">
+        <label for="query-name">Name</label>
+        <input
+          class="form-control"
+          name="query-name"
+          [(ngModel)]="query.customer_id.name"
+          placeholder="Enter Customer name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="query-phone-no">Phone_No</label>
+        <input
+          class="form-control"
+          name="query-phone-no"
+          [(ngModel)]="query.customer_id.phone_no"
+          placeholder="Enter customer query"
+        />
+      </div>
+      <div class="form-group">
+        <label for="query-address">Address</label>
+        <input
+          class="form-control"
+          name="query-address"
+          [(ngModel)]="query.customer_id.address"
+          placeholder="Enter customer street and door number with city"
+        />
+      </div>
+      <div class="form-group">
+        <label for="query-city">City</label>
+        <input
+          class="form-control"
+          name="query-city"
+          [(ngModel)]="query.customer_id.city"
+          placeholder="Enter customer city name"
+        />
+      </div>
+      <div class="form-group" *ngIf="query.view != 'u'">
+        <label for="select-no-of-products">Select No of Products</label>
+        <select
+          class="products"
+          [(ngModel)]="query.count"
+          name="count of the products"
+          (change)="setProduct()"
+        >
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div *ngIf="query.products && query.products.length">
+        <div *ngFor="let q of query.products; let i = index">
+          <h4>Product: {{ i + 1 }}</h4>
+          <div class="form-group">
+            <label for="query-brand-name">Name of the Brand</label>
+            <input
+              class="form-control"
+              name="query-brand-name"
+              [(ngModel)]="q.brand"
+              placeholder="Enter the brands name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="query-product">Product</label>
+            <input
+              class="form-control"
+              name="query-product"
+              [(ngModel)]="q.product_type"
+              placeholder="Enter the product name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="query-model-no">Model_No</label>
+            <input
+              class="form-control"
+              name="query-model-no"
+              [(ngModel)]="q.model_no"
+              placeholder="Enter the model number"
+            />
+          </div>
+          <div class="form-group">
+            <label for="query-given-price">Price</label>
+            <input
+              class="form-control"
+              name="q-given-price"
+              [(ngModel)]="q.given_price"
+              placeholder="Enter the given price"
+            />
+          </div>
+          <div class="form-group">
+            <label for="bill-number-of-days">enter number of days</label>
+            <input
+              class="form-control"
+              name="bill-number-of-days"
+              [(ngModel)]="q.days"
+              placeholder="enter number of days"
+            />
+          </div>
+          <div>
+            <label>Mode Of Payment:</label>
+            <button
+              class="btn btn-{{
+                q.payment_type == 'finance' ? 'primary' : 'default'
+              }}"
+              (click)="q.payment_type = 'finance'"
+            >
+              finance
+            </button>
+            <button
+              class="btn btn-{{
+                q.payment_type == 'cash' ? 'primary' : 'default'
+              }}"
+              (click)="q.payment_type = 'cash'"
+            >
+              cash
+            </button>
+            <button
+              class="btn btn-{{
+                q.payment_type == 'card' ? 'primary' : 'default'
+              }}"
+              (click)="q.payment_type = 'card'"
+            >
+              card
+            </button>
+          </div>
+        </div>
+      </div>
+      <button
+        class="btn btn-primary"
+        *ngIf="query.view == 'n'"
+        (click)="createQuery(query)"
+      >
+        Create
+      </button>
+      <button
+        class="btn btn-info"
+        *ngIf="query.view == 'u'"
+        (click)="updateQuery(query)"
+      >
+        Update
+      </button>
+    </form>
+  </div>
+  <div style="margin-top: 2%">
+    <div class="col-md-12" *ngIf="query.view == 'v'">
+      <h2>Query Details</h2>
+    </div>
+    <div class="card" *ngIf="query.view == 'v'">
+      <div class="container row">
+        <div class="col-md-12">
+          <p>Name: {{ query.customer_id.name }}</p>
+          <p>Mobile: {{ query.customer_id.phone_no }}</p>
+          <p>Address: {{ query.customer_id.address }}</p>
+          <p>City: {{ query.customer_id.city }}</p>
+          <div *ngIf="role == 'm'">
+            <ul *ngFor="let log of query.logs">
+              <li>
+                <h5>{{ log }}</h5>
+              </li>
+            </ul>
+          </div>
+          <ul *ngFor="let item of query.products; let i = index">
+            <li>
+              <h6>Product:{{ i + 1 }}</h6>
+            </li>
+            <li>Company: {{ item.brand }}</li>
+            <li>product: {{ item.product_type }}</li>
+            <li>Model No: {{ item.model_no }}</li>
+            <li>Price: {{ item.given_price }}</li>
+            <li>Date:{{ item.date }}</li>
+            <li>
+              <label>Mode Of Payment:</label>
+              <button
+                disabled
+                class="btn btn-{{
+                  item.payment_type == 'finance' ? 'primary' : 'default'
+                }}"
+                *ngIf="item.payment_type == 'finance'"
+              >
+                finance
+              </button>
+              <button
+                disabled
+                class="btn btn-{{
+                  item.payment_type == 'cash' ? 'primary' : 'default'
+                }}"
+                *ngIf="item.payment_type == 'cash'"
+              >
+                cash
+              </button>
+              <button
+                disabled
+                class="btn btn-{{
+                  item.payment_type == 'card' ? 'primary' : 'default'
+                }}"
+                *ngIf="item.payment_type == 'card'"
+              >
+                card
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

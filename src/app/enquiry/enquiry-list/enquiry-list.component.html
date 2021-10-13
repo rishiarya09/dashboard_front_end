@@ -1,0 +1,268 @@
+<!-- manager navbar -->
+<div *ngIf="role == 'm'">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" [routerLink]="['/profile-create']">
+      <img
+        src="../../../assets/brand/bootstrap-solid.svg"
+        width="30"
+        height="30"
+        class="d-inline-block align-top"
+        alt=""
+      />
+      Juturu
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/profile-create']"
+            >Profile Create</a
+          >
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/enquiry-list']"
+            >Enquiries<span class="sr-only">(current)</span></a
+          >
+        </li>
+      </ul>
+      <button class="btn btn-primary" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+</div>
+<!-- manager navbar ends here -->
+<!-- salesmen navbar -->
+<div *ngIf="role == 's'">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" [routerLink]="['/billing-list']">
+      <img
+        src="../../../assets/brand/bootstrap-solid.svg"
+        width="30"
+        height="30"
+        class="d-inline-block align-top"
+        alt=""
+      />
+      Juturu
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/enquiry-list']"
+            >Enquiries<span class="sr-only">(current)</span></a
+          >
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/billing-list']">Bills</a>
+        </li> -->
+      </ul>
+      <button class="btn btn-primary" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+</div>
+<!--  saslesmen navbar ends -->
+<div>
+  <alert></alert>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h2>New Added Queries</h2>
+      <span *ngIf="!newquerylist.length">No new quieries</span>
+      <ul class="list-group" *ngFor="let query of newquerylist">
+        <li
+          class="list-group-item"
+          *ngIf="role == 's' && query.status && query.status == 'p'"
+        >
+          <table>
+            <td class="username">{{ query.customer_id.name }}</td>
+            <td class="view">
+              <button
+                class="btn btn-{{
+                  query.status == 'p' ? 'danger' : ''
+                }} status-button"
+                (click)="
+                  query.status == 'p'
+                    ? (query.status = 'd')
+                    : (query.status = 'p');
+                  updatestatus(query)
+                "
+              >
+                {{ query.status == "p" ? "clear pending" : "Done" }}
+              </button>
+            </td>
+            <td class="view">
+              <button
+                class="btn btn-warning view-button"
+                [class.active]="query === selectedQuery"
+                (click)="viewQuery(query)"
+              >
+                view
+              </button>
+            </td>
+            <td class="view">
+              <button
+                class="btn btn-primary update-button"
+                (click)="selectQuery(query); query.view = 'u'"
+              >
+                Update
+              </button>
+            </td>
+          </table>
+        </li>
+        <li class="list-group-item" *ngIf="role == 'm' && query.status">
+          <table>
+            <td class="username">{{ query.customer_id.name }}</td>
+            <td class="view">
+              <button
+                class="btn btn-{{
+                  query.status == 'p' ? 'danger' : ''
+                }} status-button"
+                (click)="
+                  query.status == 'p'
+                    ? (query.status = 'd')
+                    : (query.status = 'p');
+                  updatestatus(query)
+                "
+              >
+                {{ query.status == "p" ? "clear pending" : "Done" }}
+              </button>
+            </td>
+            <td class="view">
+              <button
+                class="btn btn-warning view-button"
+                [class.active]="query === selectedQuery"
+                (click)="viewQuery(query)"
+              >
+                view
+              </button>
+            </td>
+            <td class="view">
+              <button
+                class="btn btn-primary update-button"
+                (click)="selectQuery(query); query.view = 'u'"
+              >
+                Update
+              </button>
+            </td>
+          </table>
+        </li>
+      </ul>
+      <h2>Pending Quiries for the day</h2>
+      <ul class="list-group" *ngFor="let query of querieslist">
+        <li
+          class="list-group-item"
+          *ngIf="role == 's' && query.status && query.status == 'p'"
+        >
+          <table>
+            <td class="username">{{ query.customer_id.name }}</td>
+            <td class="view">
+              <button
+                class="btn btn-{{
+                  query.status == 'p' ? 'danger' : ''
+                }} status-button"
+                (click)="
+                  query.status == 'p'
+                    ? (query.status = 'd')
+                    : (query.status = 'p');
+                  updatestatus(query)
+                "
+              >
+                {{ query.status == "p" ? "clear enquiry" : "Make it Pending" }}
+              </button>
+            </td>
+            <td class="view">
+              <button
+                class="btn btn-warning view-button"
+                [class.active]="query === selectedQuery"
+                (click)="viewQuery(query)"
+              >
+                view
+              </button>
+            </td>
+            <td class="view">
+              <button
+                class="btn btn-primary update-button"
+                (click)="selectQuery(query); query.view = 'u'"
+              >
+                Update
+              </button>
+            </td>
+          </table>
+        </li>
+        <li class="list-group-item" *ngIf="query.status && role == 'm'">
+          <table>
+            <td class="username">{{ query.customer_id.name }}</td>
+            <td class="view">
+              <button
+                class="btn btn-{{
+                  query.status == 'p' ? 'danger' : ''
+                }} status-button"
+                (click)="
+                  query.status == 'p'
+                    ? (query.status = 'd')
+                    : (query.status = 'p');
+                  updatestatus(query)
+                "
+              >
+                {{ query.status == "p" ? "clear enquiry" : "Make it Pending" }}
+              </button>
+            </td>
+            <td class="view">
+              <button
+                class="btn btn-warning view-button"
+                [class.active]="query === selectedQuery"
+                (click)="viewQuery(query)"
+              >
+                view
+              </button>
+            </td>
+            <td class="view">
+              <button
+                class="btn btn-primary update-button"
+                (click)="selectQuery(query); query.view = 'u'"
+              >
+                Update
+              </button>
+            </td>
+          </table>
+        </li>
+      </ul>
+      <button
+        class="btn btn-warning"
+        *ngIf="role != 'm'"
+        (click)="createNewQuery()"
+      >
+        New
+      </button>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+      <app-enquiry-details
+        [query]="selectedQuery"
+        [createHandler]="addQuery"
+        [updateHandler]="updateQuery"
+      >
+      </app-enquiry-details>
+    </div>
+  </div>
+</div>

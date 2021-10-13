@@ -1,0 +1,55 @@
+.row{
+    margin: 0px;
+}
+.view-button{
+    position: absolute;
+    right: 25%;
+    top: 7%;
+}
+.update-button{
+    position: absolute;
+    right: 4%;
+    top: 7%;
+}
+.status-button{
+    position: absolute;
+    right: 35%;
+    top: 7%;
+}
+
+
+@media only screen and (max-width: 640px) {
+    li.list-group-item {
+        padding: 10px 5px;
+    }
+    li.list-group-item table {
+        width: 100%;
+    }
+    td.username{
+        padding: 0;
+        display: block;
+        width: 100%;;
+    }
+    td.view{
+        width: auto;
+        display: inline-block;
+        vertical-align: top;
+    }
+    .view-button{
+        position: static;
+        float: none;
+    width: 100%;
+    margin-right: 10px;
+    }
+    .update-button{
+        width: 100%;
+        float: none;
+        position: static;
+    }
+    .status-button{
+        float: none;
+        position: static;
+    right: 35%;
+    top: 7%;
+    }
+}

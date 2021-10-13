@@ -1,0 +1,240 @@
+<div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" [routerLink]="['/profile-create']">
+      <img
+        src="../../../assets/brand/bootstrap-solid.svg"
+        width="30"
+        height="30"
+        class="d-inline-block align-top"
+        alt=""
+      />
+      Juturu
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/profile-create']"
+            >Profile Create</a
+          >
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/enquiry-list']"
+            >Enquiries<span class="sr-only">(current)</span></a
+          >
+        </li>
+      </ul>
+      <button class="btn btn-primary" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+</div>
+<alert></alert>
+<div class="row">
+  <div class="col-md-6">
+    <h2>Staff Profiles</h2>
+    <span *ngIf="!user.length">No Staff Profiles Created</span>
+    <ul class="list-group" *ngFor="let profile of user">
+      <li class="list-group-item">
+        <table>
+          <td class="username">
+            <p>Name: {{ profile.first_name + " " + profile.last_name }}</p>
+            <p>email: {{ profile.email }}</p>
+            <p>Phone: {{ profile.phone_no }}</p>
+            <p>address: {{ profile.address }}</p>
+            <p>city: {{ profile.city }}</p>
+          </td>
+          <td class="view">
+            <button
+              class="btn btn-primary update-button"
+              (click)="
+                profile.view = 'u';
+                profile.password = '';
+                selectProfile(profile)
+              "
+            >
+              Edit Profile
+            </button>
+          </td>
+          <td class="view">
+            <button
+              class="btn btn-warning update-button"
+              (click)="
+                profile.view = 'r';
+                profile.password = '';
+                selectProfile(profile)
+              "
+            >
+              Reset Password
+            </button>
+          </td>
+          <td class="view">
+            <button
+              class="btn btn-btn btn-{{
+                profile.status == 'enable' ? 'warning' : 'danger'
+              }} update-button"
+              (click)="
+                profile.status === 'enable'
+                  ? (profile.status = 'disable')
+                  : (profile.status = 'enable');
+                DisableProfile(profile)
+              "
+            >
+              {{ profile.status === "enable" ? "disable" : "enable" }} account
+            </button>
+          </td>
+        </table>
+      </li>
+    </ul>
+    <button class="btn btn-warning" (click)="newUser()">Create Profile</button>
+  </div>
+
+  <div class="col-md-6 col-md-offset-2" *ngIf="createUser">
+    <div
+      *ngIf="
+        createUser.view == 'u' ||
+        (createUser.view == 'n' && createUser.view != 'v')
+      "
+    >
+      <h2>Create New Profile</h2>
+      <div class="form-group">
+        <label for="query-name">First Name</label>
+        <input
+          class="form-control"
+          name="First-name"
+          [(ngModel)]="createUser.first_name"
+          placeholder="Enter first name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="query-name">Last Name</label>
+        <input
+          class="form-control"
+          name="Last-name"
+          [(ngModel)]="createUser.last_name"
+          placeholder="Enter first name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="phone-no">Phone_No</label>
+        <input
+          class="form-control"
+          name="query-phone-no"
+          [(ngModel)]="createUser.phone_no"
+          placeholder="Enter Phone Number Here"
+        />
+      </div>
+      <div class="form-group" *ngIf="createUser.view != 'u'" disable>
+        <label for="email">Email</label>
+        <input
+          class="form-control"
+          name="email"
+          [(ngModel)]="createUser.email"
+          placeholder="Enter Email Here"
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          class="form-control"
+          name="email"
+          [(ngModel)]="createUser.email"
+          placeholder="Enter Email Here"
+        />
+      </div>
+      <div class="form-group" *ngIf="createUser.view != 'u'">
+        <label for="query-phone-no">Password</label>
+        <input
+          class="form-control"
+          name="password"
+          [(ngModel)]="createUser.password"
+          placeholder="Enter Password Here"
+        />
+      </div>
+      <div class="form-group" *ngIf="createUser.view != 'u'">
+        <label for="confirm-password">Confirm Password</label>
+        <input
+          class="form-control"
+          name="password"
+          [(ngModel)]="createUser.confirm_password"
+          placeholder="Re-Enter Password Here"
+        />
+      </div>
+      <div class="form-group">
+        <label for="query-address">Address</label>
+        <input
+          class="form-control"
+          name="query-address"
+          [(ngModel)]="createUser.address"
+          placeholder="Enter customer street and door number "
+        />
+      </div>
+      <div class="form-group">
+        <label for="query-address">City</label>
+        <input
+          class="form-control"
+          name="query-address"
+          [(ngModel)]="createUser.city"
+          placeholder="Enter customer street and door number "
+        />
+      </div>
+      <button
+        class="btn btn-warning"
+        *ngIf="createUser.view == 'n'"
+        (click)="CreateProfile()"
+      >
+        Create Profile
+      </button>
+      <button
+        class="btn btn-warning"
+        *ngIf="createUser.view == 'u'"
+        (click)="updateProfile()"
+      >
+        Update Profile
+      </button>
+      <button class="btn btn-danger" (click)="close()">Close</button>
+    </div>
+    <div *ngIf="createUser.view == 'r'">
+      <div class="form-group">
+        <label for="Name"
+          >Name:
+          <h2>
+            {{ createUser.first_name + " " + createUser.last_name }}
+          </h2></label
+        >
+      </div>
+      <div class="form-group">
+        <label for="query-phone-no">Password</label>
+        <input
+          class="form-control"
+          name="password"
+          [(ngModel)]="createUser.password"
+          placeholder="Enter Password Here"
+        />
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input
+          class="form-control"
+          name="password"
+          [(ngModel)]="createUser.confirm_password"
+          placeholder="Re-Enter Password Here"
+        />
+      </div>
+      <button class="btn btn-primary" (click)="ResetPassword()">
+        Reset Password
+      </button>
+      <button class="btn btn-danger" (click)="close()">close</button>
+    </div>
+  </div>
+</div>

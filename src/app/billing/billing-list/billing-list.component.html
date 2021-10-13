@@ -1,0 +1,49 @@
+<div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" [routerLink]="[ '/billing-list']">
+      <img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+      Juturu
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="[ '/enquiry-list']">Enquiries</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="[ '/billing-list']">Bills<span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <button class="btn btn-primary" [routerLink]="[ '/login']">Logout</button>
+    </div>
+  </nav>
+</div>
+<div>
+  <div class="row ">
+    <div class="col-md-6">
+      <h2>Bills</h2>
+      <ul class="list-group" *ngFor="let bill of billingQueries">
+        <li class="list-group-item">
+          <table>
+            <td class="username">{{bill.name}}</td>
+            <td class="view">
+              <button disabled class="btn btn-{{bill.status == 'p'? 'danger' : 'success'}} status-button" style="margin-left: 5%">
+                {{bill.status == 'p' ? 'Pending' : 'Done'}}</button>
+            </td>
+            <td class="view"><button class="btn btn-warning view-button" [class.active]="bill === selectedBill" (click)="viewBill(bill)">view</button></td>
+            <td class="view"><button class="btn btn-primary update-button" [disabled]="bill.status == 'd'" (click)="selectBill(bill); bill.view = 'u'">Update</button></td>
+          </table>
+        </li>
+      </ul>
+      <button class="btn btn-warning" (click)="createNewBilling()">New</button>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+      <app-billing-details [bill]="selectedBill" [createHandler]="addBill" [updateHandler]="updateBill">
+      </app-billing-details>
+    </div>
+
+  </div>
