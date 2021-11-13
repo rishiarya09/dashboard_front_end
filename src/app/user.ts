@@ -23,7 +23,14 @@ export interface userNew {
   role: string;
   address: string;
   city: string;
-  phone_no: string;
+  phone_no: number;
   view: string;
   status: string;
+}
+
+export enum viewStatus{
+  view="view",
+  update="update",
+  resetPassword="resetPassword",
+  new="new"
 }

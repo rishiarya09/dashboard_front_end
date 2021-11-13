@@ -96,115 +96,135 @@
         </table>
       </li>
     </ul>
-    <button class="btn btn-warning" (click)="newUser()">Create Profile</button>
+    <button class="btn btn-warning" (click)="openCreateForm()">Create Profile</button>
   </div>
 
-  <div class="col-md-6 col-md-offset-2" *ngIf="createUser">
-    <div
-      *ngIf="
-        createUser.view == 'u' ||
-        (createUser.view == 'n' && createUser.view != 'v')
-      "
-    >
-      <h2>Create New Profile</h2>
+  <div class="col-md-6 col-md-offset-2" [hidden]="hideForm">
+    <div [hidden]="!(view === viewStatus.update || view === viewStatus.new)">
+      <h2 *ngIf="view === viewStatus.new">Create New Profile</h2>
+      <h2 *ngIf="view === viewStatus.update">Edit Profile</h2>
+      <form #formModel="ngForm">
       <div class="form-group">
-        <label for="query-name">First Name</label>
+        <label for="firstname">First Name</label>
+        <p *ngIf="firstNameError" class="error-message">please provide a valid first name</p>
         <input
           class="form-control"
-          name="First-name"
-          [(ngModel)]="createUser.first_name"
+          name="firstname"
+          ngModel
           placeholder="Enter first name"
+          required
+          type="text"
         />
       </div>
       <div class="form-group">
-        <label for="query-name">Last Name</label>
+        <label for="lastname">Last Name</label>
+        <p *ngIf="lastNameError" class="error-message">please provide a valid last name</p>
         <input
           class="form-control"
-          name="Last-name"
-          [(ngModel)]="createUser.last_name"
+          name="lastname"
+          ngModel
           placeholder="Enter first name"
+          required
+          type="text"
         />
       </div>
       <div class="form-group">
-        <label for="phone-no">Phone_No</label>
+        <label for="queryphoneno">Phone_No</label>
+        <p *ngIf="phoneNumberError" class="error-message">please provide a valid Phone_No</p>
         <input
           class="form-control"
-          name="query-phone-no"
-          [(ngModel)]="createUser.phone_no"
+          name="queryphoneno"
+          ngModel
           placeholder="Enter Phone Number Here"
+          required
+          minlength="10"
+          maxlength="10"
+          type="number"
         />
       </div>
-      <div class="form-group" *ngIf="createUser.view != 'u'" disable>
+      <div class="form-group" *ngIf="view != viewStatus.update" disable>
         <label for="email">Email</label>
+        <p *ngIf="emailError" class="error-message">please provide a valid email</p>
         <input
           class="form-control"
           name="email"
-          [(ngModel)]="createUser.email"
+          ngModel
           placeholder="Enter Email Here"
+          required
+          email
         />
       </div>
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="confirmemail">Email</label>
+        <p *ngIf="emailError" class="error-message">please provide a valid email</p>
         <input
           class="form-control"
-          name="email"
-          [(ngModel)]="createUser.email"
+          name="confirmemail"
+          ngModel
           placeholder="Enter Email Here"
+          required
+          email
         />
       </div>
-      <div class="form-group" *ngIf="createUser.view != 'u'">
-        <label for="query-phone-no">Password</label>
+      <div class="form-group" [hidden]="view == viewStatus.update">
+        <label for="password">Password</label>
+        <p *ngIf="passwordError" class="error-message">please provide a valid password</p>
         <input
           class="form-control"
           name="password"
-          [(ngModel)]="createUser.password"
+          ngModel
           placeholder="Enter Password Here"
+          required
         />
       </div>
-      <div class="form-group" *ngIf="createUser.view != 'u'">
-        <label for="confirm-password">Confirm Password</label>
+      <div class="form-group" [hidden]="view == viewStatus.update">
+        <label for="confirmpassword">Confirm Password</label>
+        <p *ngIf="passwordError" class="error-message">please provide a valid password</p>
         <input
           class="form-control"
-          name="password"
-          [(ngModel)]="createUser.confirm_password"
+          name="confirmpassword"
+          ngModel
           placeholder="Re-Enter Password Here"
+          required
         />
       </div>
       <div class="form-group">
-        <label for="query-address">Address</label>
+        <label for="queryAddress">Address</label>
         <input
           class="form-control"
-          name="query-address"
-          [(ngModel)]="createUser.address"
+          name="queryAddress"
+          ngModel
           placeholder="Enter customer street and door number "
         />
       </div>
       <div class="form-group">
-        <label for="query-address">City</label>
+        <label for="city">City</label>
         <input
           class="form-control"
-          name="query-address"
-          [(ngModel)]="createUser.city"
+          name="city"
+          ngModel
           placeholder="Enter customer street and door number "
         />
       </div>
       <button
         class="btn btn-warning"
-        *ngIf="createUser.view == 'n'"
+        *ngIf="view == viewStatus.new"
         (click)="CreateProfile()"
+        type="submit"
       >
         Create Profile
       </button>
       <button
         class="btn btn-warning"
-        *ngIf="createUser.view == 'u'"
+        *ngIf="view == viewStatus.update"
         (click)="updateProfile()"
       >
         Update Profile
       </button>
       <button class="btn btn-danger" (click)="close()">Close</button>
+    </form>
     </div>
-    <div *ngIf="createUser.view == 'r'">
+    <div *ngIf="view == viewStatus.resetPassword">
       <div class="form-group">
         <label for="Name"
           >Name:
@@ -235,6 +255,9 @@
         Reset Password
       </button>
       <button class="btn btn-danger" (click)="close()">close</button>
+   
     </div>
+  
   </div>
+
 </div>
